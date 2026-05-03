@@ -141,6 +141,9 @@ a{text-decoration:none;color:inherit} button{cursor:pointer;border:none;font-fam
   #cart-drawer{width:100%;right:-100%;}
   .nav-links a{padding:0 .5rem;font-size:.6rem;}
 }
+
+.ci-info{flex:1;min-width:0;}.ci-name{font-family:'Noto Serif TC',serif;font-size:.8rem;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}.ci-unit{font-family:'Cormorant Garamond',serif;font-size:.75rem;color:var(--warm-gray);}.ci-ctrl{display:flex;align-items:center;border:1px solid var(--border-red);overflow:hidden;flex-shrink:0;}.cqb{width:24px;height:24px;background:var(--paper);border:none;font-size:.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s;}.cqb:hover{background:var(--gold);color:#fff;}.cqn{width:26px;height:24px;border-left:1px solid var(--border-red);border-right:1px solid var(--border-red);text-align:center;line-height:24px;font-family:'Cormorant Garamond',serif;font-size:.85rem;background:#fff;}.ci-tot{font-family:'Cormorant Garamond',serif;font-size:.88rem;font-weight:600;color:var(--ink);min-width:52px;text-align:right;flex-shrink:0;}.ci-rm{color:var(--warm-gray);font-size:.8rem;background:none;border:none;cursor:pointer;padding:.2rem;transition:color .2s;}.ci-rm:hover{color:var(--red)}
+
 </style>
 </head>
 <body>
@@ -154,7 +157,7 @@ a{text-decoration:none;color:inherit} button{cursor:pointer;border:none;font-fam
     <div class="nav-links">
       <a href="about.html"><span class="zh-text inline">關於本店</span><span class="en-text inline">About</span></a>
       <a href="products.html" class="active"><span class="zh-text inline">臘味精品</span><span class="en-text inline">Products</span></a>
-      <a href="index.html#shop"><span class="zh-text inline">網上購物</span><span class="en-text inline">Shop</span></a>
+      
       <a href="index.html#contact"><span class="zh-text inline">聯絡我們</span><span class="en-text inline">Contact</span></a>
       <a href="index.html#shop" class="nav-shop"><span class="zh-text inline">立即選購</span><span class="en-text inline">Order Now</span></a>
       <a href="https://www.facebook.com/yuewohopkee/" target="_blank" class="nav-social" title="Facebook">
@@ -374,24 +377,20 @@ a{text-decoration:none;color:inherit} button{cursor:pointer;border:none;font-fam
 </div>
 
 <!-- CART -->
+</div>
+
+
 <button id="cart-float" onclick="openCart()">🛒<div id="cart-badge">0</div></button>
-<div id="overlay" onclick="closeCart()"></div>
+<div id="cartOverlay" onclick="closeCart()"></div>
 <div id="cart-drawer">
   <div class="cart-head">
     <div class="cart-title"><span class="zh-text inline">購物車</span><span class="en-text inline">Cart</span></div>
     <button class="cart-x" onclick="closeCart()">✕</button>
   </div>
-  <div class="cart-list" id="cartList">
-    <div class="cart-empty"><span class="zh-text inline">購物車暫時為空</span><span class="en-text inline">Your cart is empty</span></div>
-  </div>
+  <div class="cart-list" id="cartList"></div>
   <div class="cart-foot">
-    <div class="cart-total-row">
-      <span><span class="zh-text inline">合計</span><span class="en-text inline">Total</span></span>
-      <strong id="cartTotal">HK$0</strong>
-    </div>
-    <button class="checkout-btn" onclick="checkout()">
-      <span class="zh-text inline">前往結賬 →</span><span class="en-text inline">Proceed to Checkout →</span>
-    </button>
+    <div class="cart-total-row"><span><span class="zh-text inline">合計</span><span class="en-text inline">Total</span></span><strong id="cartTotalAmt">HK$0</strong></div>
+    <button class="checkout-btn" onclick="checkout()"><span class="zh-text inline">前往結賬 →</span><span class="en-text inline">Proceed to Checkout →</span></button>
     <div class="mshop-note">Secure checkout · Mshop Pay · VISA · PayMe · FPS · Apple Pay</div>
   </div>
 </div>
@@ -400,6 +399,45 @@ a{text-decoration:none;color:inherit} button{cursor:pointer;border:none;font-fam
 
 <script>
 const PRODUCTS = [{"id": "wufa", "cn": "五花臘肉", "en": "Cured Pork Belly", "price": 148, "unit_cn": "斤", "unit_en": "600g", "badge_cn": "招牌", "badge_en": "Signature", "desc_cn": "精選五花豬腩肉，以秘製醬油、砂糖及玫瑰露酒醃製風乾，肥瘦層次分明。醃製兩至三天後入焙爐低溫慢烘四天，色澤深紅油亮，煲仔飯首選。", "desc_en": "Layered pork belly cured with heirloom soy, sugar and rose wine. Marinated 2–3 days then kiln-dried for 4 days. Glistening layers of fat and lean — the quintessential clay pot rice companion.", "tips_cn": "蒸約15分鐘，切薄片，配白飯或煲仔飯。", "tips_en": "Steam 15 mins, slice thinly. Classic with clay pot rice."}, {"id": "oyster", "cn": "煎金蠔臘腸皇", "en": "Gold Oyster Sausage", "price": 198, "unit_cn": "斤", "unit_en": "600g", "badge_cn": "人氣", "badge_en": "Popular", "desc_cn": "以新鮮豬肉配優質蠔油調製，腸身飽滿，煎熟後外皮金黃酥脆，甘香鮮美，內裡肉汁充盈。", "desc_en": "Premium pork blended with natural oyster sauce. Pan-fry until golden and crispy — the interior stays juicy with rich umami depth.", "tips_cn": "中火煎至金黃，切斜片上碟。", "tips_en": "Pan-fry over medium heat until golden. Slice diagonally."}, {"id": "duckliver", "cn": "乾鴨潤腸", "en": "Dried Duck Liver Sausage", "price": 168, "unit_cn": "斤", "unit_en": "600g", "badge_cn": "精選", "badge_en": "Premium", "desc_cn": "選用優質新鮮鴨潤（鴨肝），乾製後質地結實爽口，味道濃郁深邃，膶香撲鼻，為膶腸愛好者必試之選。", "desc_en": "Fresh duck liver kiln-dried to a firm, chewy texture. Rich, deep flavour — a must for liver sausage enthusiasts.", "tips_cn": "蒸10-12分鐘，切片，配白粥尤佳。", "tips_en": "Steam 10–12 mins. Outstanding with plain congee."}, {"id": "truffle", "cn": "黑松露臘腸皇", "en": "Black Truffle Sausage Supreme", "price": 228, "unit_cn": "斤", "unit_en": "600g", "badge_cn": "新品", "badge_en": "New", "desc_cn": "第三代Sam與老師傅合力研發，傳統廣式臘腸工藝融合法國黑松露，黑松露土香與玫瑰露酒香互相輝映，創新而不失根本，送禮佳選。", "desc_en": "Traditional lap cheong elevated with French black truffle. Innovative yet deeply rooted. An excellent gift.", "tips_cn": "蒸熟切片，配炒飯或芥蘭，松露香更突顯。", "tips_en": "Steam and slice. Pairs beautifully with fried rice or Chinese broccoli."}, {"id": "duck", "cn": "南安臘鴨髀", "en": "Nam On Preserved Duck Leg", "price": 138, "unit_cn": "隻", "unit_en": "each", "badge_cn": "傳統", "badge_en": "Classic", "desc_cn": "南安傳統工法，鴨髀以鹽、糖及天然香料醃製風乾，肉質緊緻，皮薄油潤，鹹香恰到好處，蒸熟後金黃油亮。", "desc_en": "Nam On-style preserved duck leg. Firm flesh, glossy oil-rich skin, perfectly savoury when steamed.", "tips_cn": "蒸20-25分鐘，切件上碟，鴨油淋於白飯。", "tips_en": "Steam 20–25 mins, chop and serve. Drizzle rendered duck oil over rice."}, {"id": "lean", "cn": "鮮特瘦臘腸皇", "en": "Extra-Lean Pork Sausage", "price": 128, "unit_cn": "斤", "unit_en": "600g", "badge_cn": "特色", "badge_en": "Specialty", "desc_cn": "選用梅頭特瘦豬肉，脂肪含量極低，保留傳統製法及玫瑰露酒香，口感爽彈，肉味純正，健康飲食人士的理想選擇。", "desc_en": "Extra-lean shoulder pork with minimal fat. Traditional recipe preserved — rose wine, soy, kiln-drying. Firm and springy.", "tips_cn": "蒸10分鐘或煎熟，切片配時蔬。", "tips_en": "Steam 10 mins or pan-fry. Serve with seasonal vegetables."}, {"id": "goose", "cn": "鮮鵝潤腸", "en": "Fresh Goose Liver Sausage", "price": 228, "unit_cn": "斤", "unit_en": "600g", "badge_cn": "人氣", "badge_en": "Popular", "desc_cn": "以新鮮鵝肝配玫瑰露酒及秘製香料，人手灌腸入焙爐低溫慢烘，鵝肝油脂豐盈，入口即化，膶香餘韻悠長，為膶腸系列極品。", "desc_en": "Premium fresh goose liver with rose wine and secret spices, slow kiln-dried. Melt-in-mouth richness with lingering goose liver fragrance.", "tips_cn": "蒸12-15分鐘，切薄片，配白飯或白粥最佳。", "tips_en": "Steam 12–15 mins, slice thinly. Best with plain rice or congee."}];
+
+const CART_KEY = 'ywCart';
+function cartLoad(){try{return JSON.parse(sessionStorage.getItem(CART_KEY))||{};}catch(e){return {};}}
+function cartSave(c){sessionStorage.setItem(CART_KEY,JSON.stringify(c));}
+function cartAdd(pid,qty){
+  var c=cartLoad(),p=PRODUCTS.find(function(x){return x.id===pid;});
+  if(!p||qty<1)return;
+  if(c[pid])c[pid].qty+=qty;else c[pid]={name:p.cn,price:p.price,qty:qty};
+  cartSave(c);cartRender();
+}
+function cartSet(pid,qty){
+  var c=cartLoad();
+  if(qty<=0)delete c[pid];else c[pid].qty=qty;
+  cartSave(c);cartRender();
+}
+function cartCount(){return Object.values(cartLoad()).reduce(function(s,i){return s+i.qty;},0);}
+function cartTotal(){return Object.values(cartLoad()).reduce(function(s,i){return s+i.price*i.qty;},0);}
+function cartRender(){
+  var c=cartLoad(),count=cartCount();
+  var badge=document.getElementById('cart-badge');if(badge)badge.textContent=count;
+  var tot=document.getElementById('cartTotalAmt');if(tot)tot.textContent='HK$'+cartTotal().toLocaleString();
+  var list=document.getElementById('cartList');if(!list)return;
+  if(!count){list.innerHTML='<div class="cart-empty"><span class="zh-text inline">購物車暫時為空</span><span class="en-text inline">Your cart is empty</span></div>';return;}
+  list.innerHTML=Object.entries(c).map(function(kv){
+    var pid=kv[0],item=kv[1];
+    return '<div class="cart-item"><div class="ci-info"><div class="ci-name">'+item.name+'</div><div class="ci-unit">HK$'+item.price+' / 件</div></div>'
+      +'<div class="ci-ctrl"><button class="cqb" onclick="cartSet(''+pid+'','+(item.qty-1)+')">−</button>'
+      +'<span class="cqn">'+item.qty+'</span>'
+      +'<button class="cqb" onclick="cartSet(''+pid+'','+(item.qty+1)+')">+</button></div>'
+      +'<div class="ci-tot">HK$'+(item.price*item.qty)+'</div>'
+      +'<button class="ci-rm" onclick="cartSet(''+pid+'',0)">✕</button></div>';
+  }).join('');
+}
+function openCart(){cartRender();document.getElementById('cart-drawer').classList.add('open');document.getElementById('cartOverlay').classList.add('show');document.body.style.overflow='hidden';}
+function closeCart(){document.getElementById('cart-drawer').classList.remove('open');document.getElementById('cartOverlay').classList.remove('show');document.body.style.overflow='';}
+function checkout(){if(!cartCount()){alert(document.documentElement.dataset.lang==='zh'?'購物車為空':'Cart is empty');return;}alert('正在跳轉至 Mshop 安全結賬⋯
+Redirecting to Mshop secure checkout...');}
+document.addEventListener('DOMContentLoaded',function(){cartRender();});
+
 
 // ── LANG ────────────────────────────────────────────────────────
 function toggleLang(){
@@ -420,7 +458,7 @@ function cartCount(){
   return Object.values(cart).reduce((s,i)=>s+i.qty,0);
 }
 
-function addToCart(pid, qty){
+function cartAdd(pid, qty){
   const p=PRODUCTS.find(x=>x.id===pid);
   if(!p||qty<1) return;
   if(cart[pid]) cart[pid].qty+=qty;
@@ -489,7 +527,7 @@ document.querySelectorAll('.add-btn').forEach(btn=>{
     const pid=btn.dataset.pid;
     const span=document.getElementById('qn_'+pid);
     const qty=span?parseInt(span.textContent):1;
-    addToCart(pid,qty);
+    cartAdd(pid, qty);
     btn.innerHTML=qty>1?`✓ ×${qty}`:'✓';
     btn.classList.add('added');
     setTimeout(()=>{btn.innerHTML='<span class="zh-text inline">加入</span><span class="en-text inline">Add</span>';btn.classList.remove('added');},1800);
@@ -540,7 +578,7 @@ document.getElementById('mqPlus').addEventListener('click',()=>{
 document.getElementById('modalAddBtn').addEventListener('click',()=>{
   if(!currentPid) return;
   const qty=parseInt(document.getElementById('mqNum').textContent)||1;
-  addToCart(currentPid,qty);
+  cartAdd(currentPid,qty);
   const btn=document.getElementById('modalAddBtn');
   btn.innerHTML=qty>1?`✓ ×${qty}`:'✓';
   setTimeout(()=>{btn.innerHTML='<span class="zh-text inline">加入購物車</span><span class="en-text inline">Add to Cart</span>';},1800);
